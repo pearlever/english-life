@@ -113,12 +113,12 @@ async function manualAdd(){
   let entry=null,usedFallback=false;
   const offline=window.ENGLISH_LIFE_PACK?.offlineDictionary||{};
   const builtIn=offline[normalizeExpression(word)]||null;
-  if(aiKey){
+  if(builtIn){entry=normalizeGeneratedExpression(builtIn,word);usedFallback=true}
+  else if(aiKey){
    const request='Explain this EXACT English expression for a Korean adult learner: '+JSON.stringify(word)+'. Give accurate natural meanings, nuance, grammar and three different realistic example sentences. Return only JSON object {"id":'+JSON.stringify(word)+',"cat":0,"ko":"meaning in Korean","star":2,"freq":"높음","tags":["Neutral"],"pattern":"precise usage, grammar, common mistakes","examples":[["친구","complete natural English sentence","Korean translation"],["직장","second complete English sentence","Korean translation"],["토론","third complete English sentence","Korean translation"]]}. Category codes: 0=Phrasal Verbs,1=Vocabulary,2=Idioms,3=Collocations,4=Slang & Informal,5=Sentence Patterns,6=Conversation Skills. star is 1 to 5. freq is 매우 높음 / 높음 / 보통 / 낮음. Avoid invented or incorrect usages.';
    try{entry=normalizeGeneratedExpression(await geminiStructured(request,1900),word)}
    catch(err){if(!builtIn)throw err;entry=normalizeGeneratedExpression(builtIn,word);usedFallback=true}
-  }else if(builtIn){entry=normalizeGeneratedExpression(builtIn,word);usedFallback=true}
-  else throw Error('Gemini API 키 연결이 필요해. 서버 혼잡 시에는 준비된 오프라인 사전 표현만 이용할 수 있어.');
+  }else throw Error('Gemini API 키 연결이 필요해. 서버 혼잡 시에는 준비된 오프라인 사전 표현만 이용할 수 있어.');
   if(!entry)throw Error('뜻과 예문을 제대로 생성하지 못했어.');
   if(!addGeneratedExpression(entry))throw Error('이미 저장된 표현이야.');
   persist();libraryFilter='saved';librarySearch='';renderLibrary();applyLanguage();detail(entry.id);

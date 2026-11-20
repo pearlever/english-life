@@ -1,0 +1,19 @@
+{
+  "id": "/english-life/",
+  "name": "English Life — Speaking Coach",
+  "short_name": "English Life",
+  "description": "Personal English conversation, speaking and expression practice.",
+  "start_url": "/english-life/",
+  "scope": "/english-life/",
+  "display": "standalone",
+  "background_color": "#0c1021",
+  "theme_color": "#10142a",
+  "icons": [
+    {
+      "src": "./icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
